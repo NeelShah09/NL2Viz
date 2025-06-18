@@ -4,12 +4,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import re
 import json
+from typing import TypedDict
+from dotenv import load_dotenv
+import uuid
 
 from langgraph.graph import StateGraph, END, START
 from langchain_huggingface import HuggingFaceEndpoint
 import google.generativeai as genai
-from typing import TypedDict
-from dotenv import load_dotenv
+
 
 class GraphState(TypedDict):
     user_input: str
@@ -18,6 +20,7 @@ class GraphState(TypedDict):
     data: pd.DataFrame
     response: str
     visualization_code: str
+    plot_path: str
 
 class DataVisualizer:
     def __init__(self, data_path: str):
@@ -72,8 +75,8 @@ Note:
     - DO NOT IMPORT ANY LIBRARIES AND DATASETS.
     - DATA IS ALREADY LOADED IN A VARIABLE CALLED `df` WHICH IS A PANDAS DATAFRAME.
     - THE DATAFRAME CONTAINS THE COLUMNS: {', '.join(self._data.columns)}
+    - DO NOT WRITE THE CODE TO SHOW THE PLOT. EXAMPLE: plt.show() IS NOT REQUIRED.
     - USE APPROPRIATE OPERATIONS ON THE DATAFRAME TO CREATE THE VISUALIZATION AS PER USER INPUT
-
     - SAMPLE DATA:
     {self._data.head().to_string(index=False)}
 
@@ -105,9 +108,13 @@ Python Code:
     def _execute_code(self, state: GraphState):
         """Function to execute the generated code."""
         try:
+            plot_id = f"temp_plot_{uuid.uuid4().hex}.png"
             exec(self._visualization_code, {'df': self._data, 'plt': plt, 'sns': sns})
-            if self._visualization_code.strip().split()[-1] != "plt.show()":
+            os.makedirs(".cache", exist_ok=True)
+            plt.savefig(f".cache/{plot_id}")
+            if self._config["APP"]["MODE"] == "CLI":
                 plt.show()
+            state['plot_path'] = f".cache/{plot_id}"
             return state
         except Exception as e:
             raise RuntimeError(f"Error executing the code: {e}")
@@ -137,7 +144,11 @@ Python Code:
             "model_name": self._model_name,
             "file_path": self._data_path})
 
+
 if __name__ == "__main__":
+    configuration = json.load(open('config.json'))
+    if configuration["APP"]["MODE"] != "CLI":
+        raise ValueError("This script is intended to be run in CLI mode only. Set the config \"APP\":\"MODE\" to \"CLI\"")
     load_dotenv(override=True)
     file_path = "data/exams.csv"
     visualizer = DataVisualizer(file_path)

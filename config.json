@@ -1,4 +1,8 @@
 {
+    "APP": {
+        "NAME": "NL2Viz",
+        "MODE": "GUI"
+    },
     "LLM": {
         "MODEL_TYPE": "Gemini",
         "MODEL_ID": "gemini-1.5-flash-latest",
