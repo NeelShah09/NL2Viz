@@ -1,0 +1,8 @@
+{
+    "LLM": {
+        "MODEL_TYPE": "Gemini",
+        "MODEL_ID": "gemini-1.5-flash-latest",
+        "MAX_NEW_TOKENS": 128,
+        "TEMPERATURE": 0.1
+    }
+}
