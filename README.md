@@ -11,16 +11,20 @@ Dataset Used for testing: [Students Performance Dataset](https://www.kaggle.com/
 4. Create a `.env` file with `HUGGINGFACE_TOKEN` set as the huggingface token
 5. Then run `python main.py`
 
-## Sample Outputs
+## Sample GUI Snapshots
 
-### 1. Prompt: scatter plot of math score vs reading score
-
-### Output:
-
-![Testing Image 1](./sample_outputs/Figure_1.png)
-
-### 2. Prompt: vertical bar graph with x axis as parental level of education, y axis as math score and hue with race/ethnicity
+### 1. Prompt: i want to find inferemce regarding the distribution of marks , use a visualization that will best describe it, i also want to include gender field as well
 
 ### Output:
 
-![Testing Image 2](./sample_outputs/Figure_2.png)
+![Testing Image 1](./sample_outputs/Figure_3.png)
+
+### 2. Prompt: 
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Type: Stacked Bar Chart
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; X-axis: parental level of education
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Y-axis: average math score
+### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Stacked Sections: Math, Reading, Writing
+
+### Output:
+
+![Testing Image 2](./sample_outputs/Figure_4.png)

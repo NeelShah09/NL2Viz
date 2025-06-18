@@ -101,6 +101,9 @@ Python Code:
             elif self._config.get("LLM").get("MODEL_TYPE") == "Gemini":
                 model_response = self._model.generate_content(prompt_template)
                 self._visualization_code = self._process_response(model_response.text)
+            # print("-" * 100)
+            # print(f"Generated Code:\n{self._visualization_code}")
+            # print("-" * 100)
             return {**state, "data": self._data, "response": model_response, "visualization_code": self._visualization_code}
         except Exception as e:
             raise RuntimeError(f"Error generating code: {e}")
@@ -114,6 +117,7 @@ Python Code:
             plt.savefig(f".cache/{plot_id}")
             if self._config["APP"]["MODE"] == "CLI":
                 plt.show()
+            plt.close()
             state['plot_path'] = f".cache/{plot_id}"
             return state
         except Exception as e:
